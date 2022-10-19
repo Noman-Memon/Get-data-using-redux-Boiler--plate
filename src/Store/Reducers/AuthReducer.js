@@ -1,74 +1,74 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { BASE_URL } from "../../App/api.js";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { BASE_URL } from '../../App/api.js'
 import {
   getDataByBody,
   getRequest,
   postRequest,
   putRequest,
-} from "../../App/fetch";
+} from '../../App/fetch'
 
 const initialState = {
   userData: {},
-  error: "",
-  status: "",
-};
+  error: '',
+  status: '',
+}
 
 // POST REQUEST
-export const UserSignup = createAsyncThunk("UserSignup", async (body) => {
-  const result = await postRequest(`${BASE_URL}/UserSignup`, body);
-  return result;
-});
+export const UserSignup = createAsyncThunk('UserSignup', async (body) => {
+  const result = await postRequest(`${BASE_URL}/UserSignup`, body)
+  return result
+})
 
-export const UserLogin = createAsyncThunk("UserLogin", async (body) => {
-  const result = await getDataByBody(`${BASE_URL}/UserLogin`, body);
-  return result;
-});
+export const UserLogin = createAsyncThunk('UserLogin', async (body) => {
+  const result = await getDataByBody(`${BASE_URL}/UserLogin`, body)
+  return result
+})
 
 const AuthReducer = createSlice({
-  name: "authReducer",
+  name: 'authReducer',
   initialState,
   reducers: {
     userDataFromLocalStorage: (state, action) => {
-      state.userData = action.payload;
+      state.userData = action.payload
     },
     removeuserDataFromLocalStorage: (state, action) => {
-      state.userData = {};
+      state.userData = {}
     },
   },
   extraReducers: {
     [UserSignup.pending]: (state, action) => {
-      state.status = "Pending";
+      state.status = 'Pending'
     },
     [UserSignup.rejected]: (state, action) => {
-      state.status = "Error";
-      state.error = action.payload;
+      state.status = 'Error'
+      state.error = action.payload
     },
     [UserSignup.fulfilled]: (state, action) => {
       if (action.payload) {
-        state.userData.push(action.payload);
-        state.status = "Ok";
-        state.error = "none";
+        state.userData.push(action.payload)
+        state.status = 'Ok'
+        state.error = 'none'
       }
     },
     [UserLogin.pending]: (state, action) => {
-      state.status = "Pending";
+      state.status = 'Pending'
     },
     [UserLogin.rejected]: (state, action) => {
-      state.status = "Error";
-      state.error = action.payload;
+      state.status = 'Error'
+      state.error = action.payload
     },
     [UserLogin.fulfilled]: (state, action) => {
       if (action.payload) {
-        state.userData.push(action.payload);
-        state.status = "Ok";
-        state.error = "none";
+        state.userData.push(action.payload)
+        state.status = 'Ok'
+        state.error = 'none'
       }
     },
   },
-});
+})
 
-export default AuthReducer.reducer;
+export default AuthReducer.reducer
 export const {
   userDataFromLocalStorage,
   removeuserDataFromLocalStorage,
-} = AuthReducer.actions;
+} = AuthReducer.actions
